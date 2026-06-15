@@ -3,10 +3,13 @@ import { Pool } from "pg";
 import { config } from "dotenv";
 import * as schema from "./schema";
 import { and, desc, eq, isNull, like } from "drizzle-orm";
-import { UserDTO } from "../common/dto/user.dto";
-import { GoalDTO } from "../common/dto/goal.dto";
-import { CommentCommentDTO, CommentGoalDTO } from "../common/dto/comment.dto";
-import { LikeCommentDTO, LikeGoalDTO } from "../common/dto/like.dto";
+import type { UserDTO } from "../common/dto/user.dto";
+import type { GoalDTO } from "../common/dto/goal.dto";
+import type {
+  CommentCommentDTO,
+  CommentGoalDTO,
+} from "../common/dto/comment.dto";
+import type { LikeCommentDTO, LikeGoalDTO } from "../common/dto/like.dto";
 
 config();
 
