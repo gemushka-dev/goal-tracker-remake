@@ -17,7 +17,8 @@ export class UsersService {
   async getUserById(userId: number) {
     const user = await dbService.getUserById(userId);
     if (!user?.userId) throw new NotFoundException();
-    return user;
+    const { password, ...safeUser } = user;
+    return safeUser;
   }
 
   async register(user: UserDTO) {
