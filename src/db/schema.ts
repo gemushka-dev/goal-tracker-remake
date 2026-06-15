@@ -1,4 +1,4 @@
-import { like, relations } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import {
   pgTable,
   serial,
@@ -7,6 +7,7 @@ import {
   integer,
   timestamp,
   unique,
+  foreignKey,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -26,24 +27,29 @@ export const goals = pgTable("goals", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const comments = pgTable("comments", {
-  commentId: serial("comment_id").primaryKey(),
-  commentText: text("comment_text").notNull(),
-  userId: integer("user_id")
-    .references(() => users.userId, {
-      onDelete: "cascade",
-    })
-    .notNull(),
-  goalId: integer("goal_id")
-    .references(() => goals.goalId, {
-      onDelete: "cascade",
-    })
-    .notNull(),
-  parentId: integer("parent_id").references(() => comments.commentId, {
-    onDelete: "cascade",
-  }),
-  createdAt: timestamp("created_at").defaultNow(),
-});
+export const comments = pgTable(
+  "comments",
+  {
+    commentId: serial("comment_id").primaryKey(),
+    commentText: text("comment_text").notNull(),
+    userId: integer("user_id")
+      .references(() => users.userId, { onDelete: "cascade" })
+      .notNull(),
+    goalId: integer("goal_id")
+      .references(() => goals.goalId, { onDelete: "cascade" })
+      .notNull(),
+    parentId: integer("parent_id"),
+    createdAt: timestamp("created_at").defaultNow(),
+  },
+  (table) => {
+    return {
+      parentReference: foreignKey({
+        columns: [table.parentId],
+        foreignColumns: [table.commentId],
+      }).onDelete("cascade"),
+    };
+  },
+);
 
 export const likes = pgTable(
   "likes",
