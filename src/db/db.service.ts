@@ -93,10 +93,12 @@ class DbService {
       return e;
     }
   }
-  deleteGoal(goalId: number) {
+  deleteGoal(goalId: number, userId: number) {
     return this.db
       .delete(schema.goals)
-      .where(eq(schema.goals.goalId, goalId))
+      .where(
+        and(eq(schema.goals.goalId, goalId), eq(schema.goals.userId, userId)),
+      )
       .returning();
   }
   getRootCommentsByGoalId(goalId: number) {
@@ -131,10 +133,15 @@ class DbService {
       return e;
     }
   }
-  deleteComment(commentId: number) {
+  deleteComment(commentId: number, userId: number) {
     return this.db
       .delete(schema.comments)
-      .where(eq(schema.comments.commentId, commentId))
+      .where(
+        and(
+          eq(schema.comments.commentId, commentId),
+          eq(schema.comments.userId, userId),
+        ),
+      )
       .returning();
   }
 
