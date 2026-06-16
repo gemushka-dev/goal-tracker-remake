@@ -103,18 +103,11 @@ class DbService {
   }
   getRootCommentsByGoalId(goalId: number) {
     return this.db.query.comments.findMany({
-      where: and(
-        eq(schema.comments.goalId, goalId),
-        isNull(schema.comments.parentId),
-      ),
+      where: eq(schema.comments.goalId, goalId),
+      orderBy: desc(schema.comments.createdAt),
       with: {
         user: {
           columns: { password: false },
-        },
-        replies: {
-          with: {
-            user: { columns: { password: false } },
-          },
         },
       },
     });
