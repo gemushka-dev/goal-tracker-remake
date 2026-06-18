@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   pgTable,
   serial,
@@ -8,6 +8,7 @@ import {
   timestamp,
   unique,
   foreignKey,
+  check,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -23,7 +24,9 @@ export const goals = pgTable("goals", {
   goalTitle: varchar("goal_title", { length: 128 }).notNull(),
   goalContent: text("goal_content"),
   status: varchar("status", { length: 16 }).default("private"),
-  userId: integer("user_id").references(() => users.userId),
+  userId: integer("user_id").references(() => users.userId, {
+    onDelete: "cascade",
+  }),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -69,6 +72,18 @@ export const likes = pgTable(
   (table) => [
     unique("user_goal_like_unique").on(table.userId, table.goalId),
     unique("user_comment_like_unique").on(table.userId, table.commentId),
+    check(
+      "chk_one_like",
+      sql`(
+          ${table.goalId} IS NOT NULL
+          AND ${table.commentId} IS NULL
+        )
+        OR
+        (
+          ${table.goalId} IS NULL
+          AND ${table.commentId} IS NOT NULL
+        )`,
+    ),
   ],
 );
 

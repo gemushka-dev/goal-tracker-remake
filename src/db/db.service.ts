@@ -2,7 +2,7 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import { config } from "dotenv";
 import * as schema from "./schema";
-import { and, desc, eq, isNull, like } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import type { UserDTO } from "../common/dto/user.dto";
 import type { GoalDTO } from "../common/dto/goal.dto";
 import type {
@@ -37,7 +37,7 @@ class DbService {
     try {
       return await this.db.insert(schema.users).values(user).returning();
     } catch (e) {
-      return e;
+      throw e;
     }
   }
 
@@ -94,7 +94,7 @@ class DbService {
     try {
       return await this.db.insert(schema.goals).values(goal).returning();
     } catch (e) {
-      return e;
+      throw e;
     }
   }
   deleteGoal(goalId: number, userId: number) {
@@ -121,14 +121,14 @@ class DbService {
     try {
       return await this.db.insert(schema.comments).values(comment).returning();
     } catch (e) {
-      return e;
+      throw e;
     }
   }
   async createCommentToComment(comment: CommentCommentDTO) {
     try {
       return await this.db.insert(schema.comments).values(comment).returning();
     } catch (e) {
-      return e;
+      throw e;
     }
   }
   deleteComment(commentId: number, userId: number) {
