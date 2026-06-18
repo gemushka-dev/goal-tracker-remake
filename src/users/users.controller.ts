@@ -6,12 +6,16 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Req,
   Res,
+  UseGuards,
 } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { UserDTO, UserLoginDTO } from "../common/dto/user.dto";
 import type { Response } from "express";
-import { ApiParam } from "@nestjs/swagger";
+import { ApiCookieAuth, ApiParam } from "@nestjs/swagger";
+import { GoalGuard } from "../common/guards/goal.guard";
+import type { AuthRequest } from "../common/types/authrequest.type";
 
 @Controller("users")
 export class UsersController {
@@ -36,8 +40,10 @@ export class UsersController {
     return await this.usersService.login(user, res);
   }
 
-  @Delete("/:id")
-  async deleteUser(@Param("id", ParseIntPipe) id: number) {
-    return await this.usersService.deleteUser(id);
+  @ApiCookieAuth("jwt_token")
+  @UseGuards(GoalGuard)
+  @Delete("delete")
+  async deleteUser(@Req() req: AuthRequest) {
+    return await this.usersService.deleteUser(req.user.id);
   }
 }
