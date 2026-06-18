@@ -109,6 +109,7 @@ class DbService {
         user: {
           columns: { password: false },
         },
+        likes: true,
       },
     });
   }
