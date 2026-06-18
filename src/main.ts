@@ -17,6 +17,15 @@ async function bootstrap() {
       "https://t.me/gem_devbackend",
       "iskandar.django.work@gmail.com",
     )
+    .addCookieAuth(
+      "jwt_token",
+      {
+        type: "apiKey",
+        in: "cookie",
+        description: "JWT token in cookie",
+      },
+      "jwt_token",
+    )
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("docs", app, documentFactory);

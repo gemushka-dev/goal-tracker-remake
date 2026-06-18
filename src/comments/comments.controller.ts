@@ -14,14 +14,15 @@ import { CommentCommentDTO, CommentGoalDTO } from "../common/dto/comment.dto";
 import type { AuthRequest } from "../common/types/authrequest.type";
 import { GoalGuard } from "../common/guards/goal.guard";
 import { ParamsGuard } from "../common/guards/params.guard";
-import { ApiParam } from "@nestjs/swagger";
+import { ApiCookieAuth, ApiParam, ApiTags } from "@nestjs/swagger";
 
+@ApiTags("Comments")
 @Controller("comments")
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
   @ApiParam({ name: "id", type: Number, description: "GoalId to get comments" })
-  @Get("comments/:id")
+  @Get(":id")
   async getRootComments(@Param("id", ParseIntPipe) id: number) {
     return await this.commentsService.getRootComments(id);
   }
@@ -31,6 +32,7 @@ export class CommentsController {
     type: Number,
     description: "GoalId to create comment",
   })
+  @ApiCookieAuth("jwt_token")
   @UseGuards(ParamsGuard)
   @Post("create-to-goal/:id")
   async createCommentToGoal(@Body() comment: CommentGoalDTO) {
@@ -47,6 +49,7 @@ export class CommentsController {
     type: Number,
     description: "ParentId to create comment",
   })
+  @ApiCookieAuth("jwt_token")
   @UseGuards(ParamsGuard)
   @Post("create-to-comment/:id/:parent")
   async createCommentToComment(@Body() comment: CommentCommentDTO) {
@@ -58,6 +61,7 @@ export class CommentsController {
     type: Number,
     description: "CommentId to delete comment",
   })
+  @ApiCookieAuth("jwt_token")
   @UseGuards(GoalGuard)
   @Delete("delete/:id")
   async deleteComment(
