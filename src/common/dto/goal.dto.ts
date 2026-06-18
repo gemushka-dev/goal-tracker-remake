@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import {
   IsInt,
   IsNotEmpty,
@@ -7,9 +8,20 @@ import {
 } from "class-validator";
 
 export class GoalDTO {
+  @ApiProperty({
+    description: "Goal title",
+    example: "Start doing sport",
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   goalTitle!: string;
+
+  @ApiProperty({
+    description: "Goal content",
+    example: "Run every day and do push ups",
+    type: String,
+  })
   @IsOptional()
   @IsString()
   goalContent!: string;
