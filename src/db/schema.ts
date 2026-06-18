@@ -61,7 +61,9 @@ export const likes = pgTable(
     goalId: integer("goal_id").references(() => goals.goalId, {
       onDelete: "cascade",
     }),
-    commentId: integer("comment_id").references(() => comments.commentId),
+    commentId: integer("comment_id").references(() => comments.commentId, {
+      onDelete: "cascade",
+    }),
     createdAt: timestamp("created_at").defaultNow(),
   },
   (table) => [
