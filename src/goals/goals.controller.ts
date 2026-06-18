@@ -13,7 +13,7 @@ import {
 import { GoalsService } from "./goals.service";
 import type { AuthRequest } from "../common/types/authrequest.type";
 import { GoalDTO } from "../common/dto/goal.dto";
-import { GoalGuard } from "../common/guards/goal.guard";
+import { AuthGuard } from "../common/guards/auth.guard";
 import { ApiCookieAuth, ApiParam, ApiQuery } from "@nestjs/swagger";
 
 @Controller("goals")
@@ -55,14 +55,14 @@ export class GoalsController {
   }
 
   @ApiCookieAuth("jwt_token")
-  @UseGuards(GoalGuard)
+  @UseGuards(AuthGuard)
   @Get("profile")
   async getProfileGoals(@Req() req: AuthRequest) {
     return await this.goalsService.getProfileGoals(req.user["id"]);
   }
 
   @ApiCookieAuth("jwt_token")
-  @UseGuards(GoalGuard)
+  @UseGuards(AuthGuard)
   @Post("create")
   async createGoal(@Body() goal: GoalDTO) {
     return await this.goalsService.createGoal(goal);
@@ -70,7 +70,7 @@ export class GoalsController {
 
   @ApiParam({ name: "id", type: Number, description: "GoalId to delete goal" })
   @ApiCookieAuth("jwt_token")
-  @UseGuards(GoalGuard)
+  @UseGuards(AuthGuard)
   @Delete("delete/:id")
   async deleteGoal(
     @Param("id", ParseIntPipe) id: number,

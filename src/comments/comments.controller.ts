@@ -12,7 +12,7 @@ import {
 import { CommentsService } from "./comments.service";
 import { CommentCommentDTO, CommentGoalDTO } from "../common/dto/comment.dto";
 import type { AuthRequest } from "../common/types/authrequest.type";
-import { GoalGuard } from "../common/guards/goal.guard";
+import { AuthGuard } from "../common/guards/auth.guard";
 import { ParamsGuard } from "../common/guards/params.guard";
 import { ApiCookieAuth, ApiParam, ApiTags } from "@nestjs/swagger";
 
@@ -62,7 +62,7 @@ export class CommentsController {
     description: "CommentId to delete comment",
   })
   @ApiCookieAuth("jwt_token")
-  @UseGuards(GoalGuard)
+  @UseGuards(AuthGuard)
   @Delete("delete/:id")
   async deleteComment(
     @Param("id", ParseIntPipe) id: number,

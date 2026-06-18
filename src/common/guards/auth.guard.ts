@@ -11,7 +11,7 @@ import { JwtService } from "@nestjs/jwt";
 config();
 
 @Injectable()
-export class GoalGuard implements CanActivate {
+export class AuthGuard implements CanActivate {
   constructor(private readonly jwtService: JwtService) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest() as Request;
@@ -24,7 +24,9 @@ export class GoalGuard implements CanActivate {
 
       req["user"] = payload;
       if (req.body) req.body.userId = payload.id;
-    } catch (e) {}
+    } catch (e) {
+      throw new UnauthorizedException();
+    }
     return true;
   }
 }

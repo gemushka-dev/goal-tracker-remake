@@ -11,7 +11,7 @@ import {
 import { LikesService } from "./likes.service";
 import type { LikeCommentDTO, LikeGoalDTO } from "../common/dto/like.dto";
 import type { AuthRequest } from "../common/types/authrequest.type";
-import { GoalGuard } from "../common/guards/goal.guard";
+import { AuthGuard } from "../common/guards/auth.guard";
 import { ParamsGuard } from "../common/guards/params.guard";
 import { ApiCookieAuth, ApiParam } from "@nestjs/swagger";
 
@@ -49,7 +49,7 @@ export class LikesController {
     description: "GoalId to delete like",
   })
   @ApiCookieAuth("jwt_token")
-  @UseGuards(GoalGuard)
+  @UseGuards(AuthGuard)
   @Delete("unlike-goal/:id")
   async unlikeGoal(@Param("id") goalId: number, @Req() req: AuthRequest) {
     return await this.likesService.unlikeGoal(req.user["id"], goalId);
@@ -61,7 +61,7 @@ export class LikesController {
     description: "CommentId to delete like",
   })
   @ApiCookieAuth("jwt_token")
-  @UseGuards(GoalGuard)
+  @UseGuards(AuthGuard)
   @Delete("unlike-comment/:id")
   async unlikeComment(@Param("id") commentId: number, @Req() req: AuthRequest) {
     return await this.likesService.unlikeComment(req.user["id"], commentId);

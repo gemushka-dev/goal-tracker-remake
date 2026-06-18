@@ -14,7 +14,7 @@ import { UsersService } from "./users.service";
 import { UserDTO, UserLoginDTO } from "../common/dto/user.dto";
 import type { Response } from "express";
 import { ApiCookieAuth, ApiParam } from "@nestjs/swagger";
-import { GoalGuard } from "../common/guards/goal.guard";
+import { AuthGuard } from "../common/guards/auth.guard";
 import type { AuthRequest } from "../common/types/authrequest.type";
 
 @Controller("users")
@@ -41,7 +41,7 @@ export class UsersController {
   }
 
   @ApiCookieAuth("jwt_token")
-  @UseGuards(GoalGuard)
+  @UseGuards(AuthGuard)
   @Delete("delete")
   async deleteUser(@Req() req: AuthRequest) {
     return await this.usersService.deleteUser(req.user.id);
