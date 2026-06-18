@@ -50,6 +50,7 @@ class DbService {
 
   getAllGoals(limit: number, offset: number) {
     return this.db.query.goals.findMany({
+      where: eq(schema.goals.status, "public"),
       limit,
       offset,
       orderBy: desc(schema.goals.createdAt),
@@ -57,9 +58,12 @@ class DbService {
   }
   getGoalById(goalId: number) {
     return this.db.query.goals.findFirst({
-      where: eq(schema.goals.goalId, goalId),
+      where: and(
+        eq(schema.goals.goalId, goalId),
+        eq(schema.goals.status, "public"),
+      ),
       with: {
-        user: true,
+        user: { columns: { password: false } },
         likes: true,
         comments: true,
       },
