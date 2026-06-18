@@ -11,10 +11,17 @@ import {
 import { UsersService } from "./users.service";
 import { UserDTO, UserLoginDTO } from "../common/dto/user.dto";
 import type { Response } from "express";
+import { ApiParam } from "@nestjs/swagger";
 
 @Controller("users")
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @ApiParam({
+    name: "id",
+    type: Number,
+    description: "UserId to get user info",
+  })
   @Get("/:id")
   async getUserById(@Param("id", ParseIntPipe) id: number) {
     return await this.usersService.getUserById(id);
