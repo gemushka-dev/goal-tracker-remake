@@ -8,6 +8,13 @@
       "when": 1781507662330,
       "tag": "0000_misty_sheva_callister",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1781774351688,
+      "tag": "0001_strong_mandroid",
+      "breakpoints": true
     }
   ]
 }
