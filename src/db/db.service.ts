@@ -162,6 +162,18 @@ class DbService {
       )
       .returning();
   }
+
+  unlikeComment(userId: number, commentId: number) {
+    return this.db
+      .delete(schema.likes)
+      .where(
+        and(
+          eq(schema.likes.userId, userId),
+          eq(schema.likes.commentId, commentId),
+        ),
+      )
+      .returning();
+  }
 }
 
 export const dbService = new DbService();
