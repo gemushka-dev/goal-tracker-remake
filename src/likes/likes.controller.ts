@@ -12,19 +12,20 @@ import { LikesService } from "./likes.service";
 import type { LikeCommentDTO, LikeGoalDTO } from "../common/dto/like.dto";
 import type { AuthRequest } from "../common/types/authrequest.type";
 import { GoalGuard } from "../common/guards/goal.guard";
+import { ParamsGuard } from "../common/guards/params.guard";
 
 @Controller("likes")
 export class LikesController {
   constructor(private readonly likesService: LikesService) {}
 
-  @UseGuards(GoalGuard)
-  @Post("create-to-goal")
+  @UseGuards(ParamsGuard)
+  @Post("create-to-goal/:id")
   async likeGoal(@Body() like: LikeGoalDTO) {
     return await this.likesService.likeGoal(like);
   }
 
-  @UseGuards(GoalGuard)
-  @Post("create-to-comment")
+  @UseGuards(ParamsGuard)
+  @Post("create-to-comment/:comment")
   async likeComment(@Body() like: LikeCommentDTO) {
     return await this.likesService.likeComment(like);
   }

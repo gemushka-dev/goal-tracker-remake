@@ -13,6 +13,7 @@ import { CommentsService } from "./comments.service";
 import { CommentCommentDTO, CommentGoalDTO } from "../common/dto/comment.dto";
 import type { AuthRequest } from "../common/types/authrequest.type";
 import { GoalGuard } from "../common/guards/goal.guard";
+import { ParamsGuard } from "../common/guards/params.guard";
 
 @Controller("comments")
 export class CommentsController {
@@ -23,14 +24,14 @@ export class CommentsController {
     return await this.commentsService.getRootComments(id);
   }
 
-  @UseGuards(GoalGuard)
-  @Post("create-to-goal")
+  @UseGuards(ParamsGuard)
+  @Post("create-to-goal/:id")
   async createCommentToGoal(@Body() comment: CommentGoalDTO) {
     return await this.commentsService.createCommentToGoal(comment);
   }
 
-  @UseGuards(GoalGuard)
-  @Post("create-to-comment")
+  @UseGuards(ParamsGuard)
+  @Post("create-to-comment/:id/:parent")
   async createCommentToComment(@Body() comment: CommentCommentDTO) {
     return await this.commentsService.createCommentToComment(comment);
   }
